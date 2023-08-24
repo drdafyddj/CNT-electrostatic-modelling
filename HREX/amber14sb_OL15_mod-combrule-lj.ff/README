@@ -1,0 +1,35 @@
+# From the group that created these files for GROMACS :
+# https://fch.upol.cz/ff_ol/gromacs.php
+#
+# amber14sb_OL15.ff package includes :
+#
+# 1- ff14SB [14] force field for proteins, originally implemented for GROMACS by Man Hoang Viet 
+#    (amber14sb.ff.tar.gz from GROMACS force field repository)
+# 2- ff99bsc0χOL3 [4] parameters for RNA, originally implemented for GROMACS by Man Hoang Viet 
+#    (amber14sb.ff.tar.gz from GROMACS force field repository)
+# 3- OL15 [8] parameters for DNA
+# 4- Joung-Cheatham parameters for monovalent ions in TIP3P (as in frcmod.ionsjc_tip3p in AMBER package)
+# 5- Allner et al. [15] parameters for Mg2+ ions
+#
+# Validation
+# Vacuum single point energies were calculated on snapshots from MD trajectories (water and ions excluded) 
+# for three different systems, DNA (24 residues, 100 snapshots), RNA (4 residues, 100 snapshots), and protein-DNA 
+# complex (258 residues, 20 snapshots). Individual potential energy components have been compared between 
+# GROMACS 4.5.1 (amber14sb_OL15.ff) and AMBER 16 (leaprc.protein.ff14SB, learpc.RNA.OL3, leaprc.DNA.OL15). 
+# Mean relative errors are shown below (see the website).
+#
+#
+#
+# Sebastien Cote : I did some modifications to the amber14sb_OL15 force field.
+#
+# 1- Added these three lines in ffbonded.itp for improper torsion angles :
+#
+# NA  CV  CC  CT       4      180.00     4.60240     2    ; SC : added from amber99sb-ildn since HID needs it.
+# NB  CW  CC  CT       4      180.00     4.60240     2    ; SC : added from amber99sb-ildn since HIE needs it.
+# NA  CW  CC  CT       4      180.00     4.60240     2    ; SC : added from amber99sb-ildn since HIP needs it.
+#
+# 2- Put back the ions parameters of amber99sb in ffnonbonded.itp. I instead created seperate files that are
+#    compatible with Joung JPCB 2008 for TIP3P and SCP/E. I did this because it might be confusing when doing
+#    simulation with proteins. Also, the parameters of Joung that were in ffnonbonded were only compatible 
+#    with TIP3P. This might be confusing and cause error if the water model is note chosen accordingly.
+# 

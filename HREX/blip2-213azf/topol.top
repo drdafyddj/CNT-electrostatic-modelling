@@ -1,0 +1,56 @@
+; Include forcefield parameters
+#include "../amber14sb_OL15_mod-combrule-lj.ff/forcefield_jc-tip3p.itp"
+
+; GAFF parameters.
+[ atomtypes ]
+;name   bond_type     mass     charge   ptype   sigma         epsilon       Amb
+ c        c           0.00000  0.00000   A     3.39967e-01   3.59824e-01 ; 1.91  0.0860
+ o        o           0.00000  0.00000   A     2.95992e-01   8.78640e-01 ; 1.66  0.2100
+ c3       c3          0.00000  0.00000   A     3.39967e-01   4.57730e-01 ; 1.91  0.1094
+ hc       hc          0.00000  0.00000   A     2.64953e-01   6.56888e-02 ; 1.49  0.0157
+ n        n           0.00000  0.00000   A     3.25000e-01   7.11280e-01 ; 1.82  0.1700
+ ca       ca          0.00000  0.00000   A     3.39967e-01   3.59824e-01 ; 1.91  0.0860
+ nh       nh          0.00000  0.00000   A     3.25000e-01   7.11280e-01 ; 1.82  0.1700
+ hn       hn          0.00000  0.00000   A     1.06908e-01   6.56888e-02 ; 0.60  0.0157
+ h1       h1          0.00000  0.00000   A     2.47135e-01   6.56888e-02 ; 1.39  0.0157
+ ha       ha          0.00000  0.00000   A     2.59964e-01   6.27600e-02 ; 1.46  0.0150
+
+; Atomtype for CNT atoms.
+[ atomtypes ]
+; name      at.num  mass     charge ptype  sigma      epsilon
+CNT           6      12.01    0.0000  A   3.39967e-01  3.59824e-01      ; same as CA.
+
+; Redefine all LJ atomtype pairs in order to use C12 and C6.
+#include "nonbonded-pairs.itp"
+
+; CNT+LNK+BLIP2 topology.
+#include "ff-parameters.itp"
+
+; Include Position restraint file
+#ifdef POSRES
+#include "posre.itp"
+#endif
+
+; Include water topology
+#include "amber14sb_OL15.ff/tip3p.itp"
+
+#ifdef POSRES_WATER
+; Position restraint for each water oxygen
+[ position_restraints ]
+;  i funct       fcx        fcy        fcz
+   1    1       1000       1000       1000
+#endif
+
+; Include topology for ions
+#include "amber14sb_OL15.ff/ions.itp"
+
+[ system ]
+; Name
+blip2-213azf
+
+[ molecules ]
+; Compound        #mols
+CNT+LNK+BLIP2             1
+SOL         14029
+NA               54
+CL               43
